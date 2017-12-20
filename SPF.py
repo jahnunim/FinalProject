@@ -11,26 +11,28 @@ print(sys.path)
 score = 0
 
 try:
-    answers = dns.resolver.query('valensiweb.com', 'TXT')
+    answers = dns.resolver.query('shufersal.co.il', 'TXT')
 
     for rdata in answers:
         if "v=spf" in rdata.to_text():
             spfRecord = rdata.to_text()
             score+= 1
-
+            print('SPF in place',spfRecord)
             if "-all" in rdata.to_text():
                 print("HardFail inplace")
                 score+=1
             else:
                 print("SoftFail inplace")
-    print(spfRecord)
+        else:
+            print("SPF record not in place!")
+
     print('your score is: ',score)
 
 
 except (dns.resolver.NXDOMAIN):
     print('There is no such domain')
 except (dns.resolver.NoAnswer):
-    print ('There are not TXT records for this domain')
+    print ('There are no TXT records for this domain')
 
 
 
