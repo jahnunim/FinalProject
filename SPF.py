@@ -11,7 +11,7 @@ print(sys.path)
 score = 0
 
 try:
-    answers = dns.resolver.query('shufersal.co.il', 'TXT')
+    answers = dns.resolver.query('valensiweb.com', 'TXT')
 
     for rdata in answers:
         if "v=spf" in rdata.to_text():
@@ -23,6 +23,7 @@ try:
                 score+=1
             else:
                 print("SoftFail inplace")
+                ## I NEED TO FIX THIS! ##
         else:
             print("SPF record not in place!")
 
