@@ -1,58 +1,73 @@
-# DMARC RECORD EXMAPLE
+# DMARC.PY checks the following:
+# 1. If DMARC record is present
+# 2. DMARC actions (none/reject/quarantine)
+# 3. Admin reports
 
-# RESOURCE:
-# https://sendgrid.com/blog/what-is-dmarc/
 
-#The TXT record name should be "_dmarc.your_domain.com."
-
-# What I want to handle?
-# 1. NO DMARC
-# 2. No SubDomain configured
-# 3. Rua? RUF?
-# rua=mailto:dmarc@sendgrid.com
-
+# Modules
 import dns.resolver
 
-# Reset DMARC record & score
+# Reset: DMARC record, score, totalScore
+dmarcRecord = None
 score = 0
-DMARCRecord = None
+totalScore = 3
 
-# Requests from the user the domain to check
+# user input: Domain name
 domain = input("What's the domain you wish to check his DMARC record?")
 
 # Builds the DMARC domain
-domain = '_dmarc.' + domain
+dmarcdomain = '_dmarc.' + domain
 
-
-
-
+# Query for the domain TXT
 try:
-    # Querying for the domain's _DMARC TXT records
-    answer = dns.resolver.query(domain, 'TXT')
+    answer = dns.resolver.query(domain, 'A')
 
-    ############# HERE IS WHERE I STOPPED - QUERY THE DMARC RECORD########
+    # DMARC record logic
+    try:
+        answer = dns.resolver.query(dmarcdomain, 'TXT')
 
-    for rdata in answer:
-        if "v=spf" in rdata.to_text():
-            spfRecord = rdata.to_text()
-            print('SPF in place', spfRecord)
-    # If no SPF record is available
-    if spfRecord is None:
-        print("SPF record not in place!")
-    # If SPF is present and configured with HardFail -
-    elif "-all" in spfRecord:
-        score+=2
-        print("HardFail inplace")
-    # Is SPF is present and configured with SoftFail ~
-    else:
-        score+1
-        print("SoftFail inplace")
-    # Prints the total score of the SPF test
-    print('Your SPF score is: ', score)
+        # Get the DMARC record
+        for rdata in answer:
+            if "v=DMARC1" in rdata.to_text():
+                dmarcRecord = rdata.to_text()
+                score += 1
+                print('DMARC in place', dmarcRecord)
 
-# If there is not such domain
+        # Check: how the receiving mail server should threat a failed DMARC test for this domain
+        if ("p=reject" or "p=quarantine") in dmarcRecord:
+            score += 1
+            print('DMARC action reject/quarantine configured for the domain')
+        elif "p=none" in dmarcRecord:
+            print('DMARC action configures as None')
+
+        # Check: administrator email address for report / fail DMARC
+        if ("rua=mailto:" or "ruf=mailto:") in dmarcRecord:
+            score += 1
+            print('DMARC has administrator reports')
+        else:
+            print("DMARC is missing reports admin")
+
+    #############################################################################################
+    ## Temporary dropping off this test, as the sub-domain by default goes by the P value.
+    #   # Check: does the domain should handles sub-domains as well
+    #    if ("sp=reject" or "sp=quarantine") in dmarcRecord:
+    #        score += 1
+    #        print("DMARC action reject/quarantine configured for sub-domains")
+    #    else:
+    #        print("DMARC action is None for sub-domains")
+    ###########################################################################################
+
+    # Check: if there is no DMARC record for that domain
+    except (dns.resolver.NXDOMAIN):
+        print('DMARC is not configured for domain:',domain)
+        print(domain,'is exposed to spoofing attacks')
+
+    print('Total DMARC score for domain',domain,'is',score,'/',totalScore)
+
+# If there is no such domain
 except (dns.resolver.NXDOMAIN):
-    print('There is no such domain')
-# If there are not TXT records available for that domain
-except (dns.resolver.NoAnswer):
-    print ('There are no TXT records for this domain')
+    print('There is no domain:',domain)
+
+
+
+

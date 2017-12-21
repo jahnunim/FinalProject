@@ -1,4 +1,4 @@
-# the SPF.PY tests if the domain has SPF record registered & if it configures as HardFail.
+# The SPF.PY tests if the domain has SPF record registered & if it configures as HardFail.
 
 # Imports the dns module.
 import dns.resolver
@@ -41,4 +41,4 @@ except (dns.resolver.NXDOMAIN):
     print('There is no such domain')
 # If there are not TXT records available for that domain
 except (dns.resolver.NoAnswer):
-    print ('There are no TXT records for this domain')
+    print ('There are no TXT records for this domain. SPF is not inplace. Your domain is exposed to spoofing attacks')
