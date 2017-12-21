@@ -19,8 +19,12 @@ DMARCRecord = None
 
 # Requests from the user the domain to check
 domain = input("What's the domain you wish to check his DMARC record?")
-domain = '_dmarc' + domain
+domain = '_dmarc.' + domain
 print(domain)
+
+############# HERE IS WHERE I STOPPED - ONLY BUILT THE DMARC DOMAIN STRING########
+
+
 try:
     # Querying for the domain's TXT records
     answers = dns.resolver.query(domain, 'TXT')
