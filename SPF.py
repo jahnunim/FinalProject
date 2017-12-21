@@ -1,17 +1,18 @@
-# The SPF.PY tests if the domain has SPF record registered & if it configures as HardFail.
+# SPF.PY checks the following:
+# 1. if SPF record is present
+# 2. if SPF action is configured for Hard/Soft fail
 
-# Imports the dns module.
+# Modules
 import dns.resolver
 
 
-
-# Reset SPF record & score
-score = 0
+# Reset: spfRecord, totalScore, maxScore
 spfRecord = None
+totalScore = 0
+maxScore = 2
 
-# Requests from the user the domain to check
-domain = input("What's the domain you wish to check his SPF record?")
-
+# user inpurt: domain name
+domain = input("Enter domain for SPF check:")
 
 try:
     # Querying for the domain's TXT records
@@ -22,23 +23,31 @@ try:
         if "v=spf" in rdata.to_text():
             spfRecord = rdata.to_text()
             print('SPF in place', spfRecord)
+
     # If no SPF record is available
     if spfRecord is None:
-        print("SPF record not in place!")
+        print('SPF is not in place for domain:', domain)
+        print(domain, 'is exposed to spoofing attacks')
+
     # If SPF is present and configured with HardFail -
     elif "-all" in spfRecord:
-        score+=2
+        totalScore+=2
         print("HardFail inplace")
+
     # Is SPF is present and configured with SoftFail ~
     else:
-        score+1
-        print("SoftFail inplace")
+        totalScore+=1
+        print("SoftFail in place")
+
     # Prints the total score of the SPF test
-    print('Your SPF score is: ', score)
+    print('Total SPF score for domain',domain,'is',totalScore,'/',maxScore)
 
 # If there is not such domain
 except (dns.resolver.NXDOMAIN):
-    print('There is no such domain')
+    print('There is no domain',domain)
+
 # If there are not TXT records available for that domain
 except (dns.resolver.NoAnswer):
-    print ('There are no TXT records for this domain. SPF is not inplace. Your domain is exposed to spoofing attacks')
+    print('SPF is not in place for domain:',domain)
+    print(domain, 'is exposed to spoofing attacks')
+    print('Total SPF score for domain', domain, 'is', totalScore, '/', maxScore)

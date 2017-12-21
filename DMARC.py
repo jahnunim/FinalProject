@@ -7,13 +7,13 @@
 # Modules
 import dns.resolver
 
-# Reset: DMARC record, score, totalScore
+# Reset: DMARC record, totalScore, maxScore
 dmarcRecord = None
-score = 0
-totalScore = 3
+maxScore = 3
+totalScore = 0
 
 # user input: Domain name
-domain = input("What's the domain you wish to check his DMARC record?")
+domain = input("Enter domain for DMARC check:")
 
 # Builds the DMARC domain
 dmarcdomain = '_dmarc.' + domain
@@ -30,19 +30,19 @@ try:
         for rdata in answer:
             if "v=DMARC1" in rdata.to_text():
                 dmarcRecord = rdata.to_text()
-                score += 1
+                totalScore += 1
                 print('DMARC in place', dmarcRecord)
 
         # Check: how the receiving mail server should threat a failed DMARC test for this domain
         if ("p=reject" or "p=quarantine") in dmarcRecord:
-            score += 1
+            totalScore += 1
             print('DMARC action reject/quarantine configured for the domain')
         elif "p=none" in dmarcRecord:
             print('DMARC action configures as None')
 
         # Check: administrator email address for report / fail DMARC
         if ("rua=mailto:" or "ruf=mailto:") in dmarcRecord:
-            score += 1
+            totalScore += 1
             print('DMARC has administrator reports')
         else:
             print("DMARC is missing reports admin")
@@ -59,10 +59,10 @@ try:
 
     # Check: if there is no DMARC record for that domain
     except (dns.resolver.NXDOMAIN):
-        print('DMARC is not configured for domain:',domain)
+        print('DMARC record is not in place for domain:',domain)
         print(domain,'is exposed to spoofing attacks')
 
-    print('Total DMARC score for domain',domain,'is',score,'/',totalScore)
+    print('Total DMARC score for domain',domain,'is',totalScore,'/',maxScore)
 
 # If there is no such domain
 except (dns.resolver.NXDOMAIN):
