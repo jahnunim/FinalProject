@@ -19,18 +19,20 @@ DMARCRecord = None
 
 # Requests from the user the domain to check
 domain = input("What's the domain you wish to check his DMARC record?")
-domain = '_dmarc.' + domain
-print(domain)
 
-############# HERE IS WHERE I STOPPED - ONLY BUILT THE DMARC DOMAIN STRING########
+# Builds the DMARC domain
+domain = '_dmarc.' + domain
+
+
 
 
 try:
-    # Querying for the domain's TXT records
-    answers = dns.resolver.query(domain, 'TXT')
+    # Querying for the domain's _DMARC TXT records
+    answer = dns.resolver.query(domain, 'TXT')
 
-    # Enumarates through all of the TXT records and pulls the SPF record
-    for rdata in answers:
+    ############# HERE IS WHERE I STOPPED - QUERY THE DMARC RECORD########
+
+    for rdata in answer:
         if "v=spf" in rdata.to_text():
             spfRecord = rdata.to_text()
             print('SPF in place', spfRecord)
