@@ -11,6 +11,16 @@
 # 3. Rua? RUF?
 # rua=mailto:dmarc@sendgrid.com
 
+import dns.resolver
+
+# Reset DMARC record & score
+score = 0
+DMARCRecord = None
+
+# Requests from the user the domain to check
+domain = input("What's the domain you wish to check his DMARC record?")
+domain = '_dmarc' + domain
+print(domain)
 try:
     # Querying for the domain's TXT records
     answers = dns.resolver.query(domain, 'TXT')
