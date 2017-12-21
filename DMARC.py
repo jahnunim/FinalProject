@@ -36,7 +36,7 @@ try:
         # Check: how the receiving mail server should threat a failed DMARC test for this domain
         if ("p=reject" or "p=quarantine") in dmarcRecord:
             totalScore += 1
-            print('DMARC action reject/quarantine configured for the domain')
+            print('DMARC action reject/quarantine is configured')
         elif "p=none" in dmarcRecord:
             print('DMARC action configures as None')
 
