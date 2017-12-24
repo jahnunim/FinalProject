@@ -68,6 +68,10 @@ try:
 except (dns.resolver.NXDOMAIN):
     print('There is no domain:',domain)
 
+# If no nameServers available
+except (dns.resolver.NoNameservers):
+    print('No name servers found')
+
 
 
 

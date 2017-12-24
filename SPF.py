@@ -51,3 +51,7 @@ except (dns.resolver.NoAnswer):
     print('SPF is not in place for domain:',domain)
     print(domain, 'is exposed to spoofing attacks')
     print('Total SPF score for domain', domain, 'is', totalScore, '/', maxScore)
+
+# If no nameServers available
+except (dns.resolver.NoNameservers):
+    print('No name servers found')
