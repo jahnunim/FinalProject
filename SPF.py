@@ -46,7 +46,7 @@ try:
 except (dns.resolver.NXDOMAIN):
     print('There is no domain',domain)
 
-# If there are not TXT records available for that domain
+# If there are no TXT records available for that domain
 except (dns.resolver.NoAnswer):
     print('SPF is not in place for domain:',domain)
     print(domain, 'is exposed to spoofing attacks')
