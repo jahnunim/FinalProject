@@ -1,8 +1,12 @@
+# MX.PY checks if the domain has multiple MX records
+# Advise to make sure additional MX endpoints are secured as the primary endpoint.
+
+
 # Modules
 import dns.resolver
 
 # Reset: mxRecords, score?
-mxRecord = None
+mxRecords = None
 maxScore = 3
 totalScore = 0
 
@@ -12,16 +16,16 @@ domain = input("Enter domain for MX records check:")
 
 try:
     # Querying for the domain's MX records
-    answers = dns.resolver.query(domain, 'MX')
+    mxRecords = dns.resolver.query(domain, 'MX')
 
-    # Enumarates through all of the TXT records and pulls the SPF record
-    if len(answers) == 1:
+    # Enumerates through all of the MX records
+    if len(mxRecords) == 1:
         print('Only 1 MX record available for domain',domain)
-        print ('MX record:',answers[0].to_text())
+        print ('MX record:',mxRecords[0].to_text())
         print('Please make sure that your MX points to a secured relay')
-    if len(answers) > 1:
+    if len(mxRecords) > 1:
         print('There are multiple MX records for domain', domain)
-        for rdata in answers:
+        for rdata in mxRecords:
             print('MX record:',rdata.to_text())
 
         print('Please make sure that your additional MX endpoints are secured as your primary MX.')
