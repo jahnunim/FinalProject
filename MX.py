@@ -37,3 +37,7 @@ except (dns.resolver.NXDOMAIN):
 # If there are no MX records available for that domain
 except (dns.resolver.NoAnswer):
     print ('There are not MX records for domain',domain)
+
+# If no nameServers available
+except (dns.resolver.NoNameservers):
+    print('No name servers found')
