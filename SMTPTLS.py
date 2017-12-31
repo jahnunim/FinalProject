@@ -5,6 +5,7 @@
 #SMTPHeloError
 #The server didn’t reply properly to the HELO greeting.
 
+# SMTPTLS.PY check if the servers behind the MX records are supporting TLS.
 
 # Modules
 import socket
@@ -13,7 +14,7 @@ import smtplib
 from smtplib import SMTP
 
 
-# Reset: mxRecords, aRecords, maxScore, totalScore?
+# Reset: mxRecords, aRecords, maxScore, totalScore, hostname
 mxRecords = None
 aRecords = None
 maxScore = 0
@@ -40,11 +41,10 @@ try:
 
             # Enumerates through all A records behind the MX record.
             for adata in aRecords:
-                # Tries to make connection to the SMTP server (in 25).
-                print(adata)
+                # Tries to make connection to the SMTP server (in 25)
                 try:
                     conn = SMTP(host=adata.to_text(),local_hostname=hostname)
-                    print("conn passed succesfully")
+
                     # EHLO request
                     conn.ehlo()
 
@@ -56,7 +56,7 @@ try:
                     # If server does not support STARTTLS
                     else:
                         maxScore += 1
-                        print("Server",adata, "does not support tls")
+                        print("Server",adata, "does not support TLS")
 
                     # Terminates the SMTP connection
                     conn.quit()
