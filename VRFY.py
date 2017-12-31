@@ -1,4 +1,5 @@
 # Modules
+import socket
 import dns.resolver
 import smtplib
 from smtplib import SMTP
@@ -8,6 +9,7 @@ mxRecords = None
 aRecords = None
 maxScore = 0
 totalScore = 0
+hostname = socket.gethostname()
 
 # user input: Domain name
 domain = input("Enter domain for VRFY check:")
@@ -33,11 +35,11 @@ try:
                 # Tries to make connection to the SMTP server (in 25).
                 print(adata)
                 try:
-                    conn = SMTP(adata.to_text())
+                    conn = SMTP(host=adata.to_text(),local_hostname=hostname)
                     print("conn passed successfully")
 
                     # HELO request
-                    SMTP.ehlo_or_helo_if_needed()
+                    conn.ehlo_or_helo_if_needed()
 
                     # Running the SMTP VRFY command again the server SMTP server.
                     vrfyResponse = conn.verify(validUser)

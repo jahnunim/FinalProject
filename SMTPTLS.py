@@ -7,15 +7,18 @@
 
 
 # Modules
+import socket
 import dns.resolver
 import smtplib
 from smtplib import SMTP
+
 
 # Reset: mxRecords, aRecords, maxScore, totalScore?
 mxRecords = None
 aRecords = None
 maxScore = 0
 totalScore = 0
+hostname = socket.gethostname()
 
 # user input: Domain name
 domain = input("Enter domain for TLS supportability check:")
@@ -40,7 +43,7 @@ try:
                 # Tries to make connection to the SMTP server (in 25).
                 print(adata)
                 try:
-                    conn = SMTP(adata.to_text())
+                    conn = SMTP(host=adata.to_text(),local_hostname=hostname)
                     print("conn passed succesfully")
                     # EHLO request
                     conn.ehlo()
@@ -62,9 +65,6 @@ try:
                 except(smtplib.socket.gaierror):
                     print("Unable to establish SMTP connection to server:", adata)
 
-            # Prints the test's total score
-            print('Total TLS score for domain', domain, 'is', totalScore, '/', maxScore)
-
         # If there is no such domain
         except (dns.resolver.NXDOMAIN):
             print('There is no domain', splitMX)
@@ -72,6 +72,8 @@ try:
         except (dns.resolver.NoAnswer):
             print('There are not A records for MX', splitMX)
 
+    # Prints the test's total score
+    print('Total TLS score for domain', domain, 'is', totalScore, '/', maxScore)
 
 # If there is no such domain
 except (dns.resolver.NXDOMAIN):
