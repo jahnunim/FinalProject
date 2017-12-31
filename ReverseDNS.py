@@ -42,6 +42,7 @@ try:
                     print(ptrRecord)
                     maxScore+=1
                     totalScore+=1
+
                 # If no PTR record
                 except (dns.resolver.NXDOMAIN):
                     print('No PTR records for the SMTP server', adata)
