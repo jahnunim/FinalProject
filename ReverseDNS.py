@@ -1,3 +1,5 @@
+# REVERSEDNS.PY checks if the MX records behind the domain has PTR.
+# If PTR is missing, the domain's SMTP connection might be rejected due to Reverse DNS test.
 
 # Modules
 import dns.resolver
@@ -21,25 +23,26 @@ try:
     for rdata in mxRecord:
         splitMX = (rdata.to_text().split(" "))[1]
         splitMX = splitMX[:-1]
-        print(splitMX)
 
+        # Pulls the A records behind the MX records
         try:
             aRecord = dns.resolver.query(splitMX,'A')
 
+            # for each A record, check if a PTR record is present.\
             for adata in aRecord:
-                print(adata)
+
+                # Builds the PTR record string
                 ptrString = adata.to_text()
-                # DELETE
-                ptrString = "40.68.241.53"
-                # DELETE
                 ptrString = '.'.join(reversed(ptrString.split("."))) + ".in-addr.arpa"
                 print (ptrString)
+
+                # Pulls the PTR record
                 try:
                     ptrRecord = dns.resolver.query(ptrString,'PTR')
                     print(ptrRecord)
                     maxScore+=1
                     totalScore+=1
-
+                # If no PTR record
                 except (dns.resolver.NXDOMAIN):
                     print('No PTR records for the SMTP server', adata)
                     maxScore += 1
