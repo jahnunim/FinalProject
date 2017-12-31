@@ -1,9 +1,3 @@
-#### Not sure that this test gives something.
-# I will put it on hold for the meentime.
-
-# 1. Query MX
-# 2. Query A behind MX
-# 3. Query PTR for IPs behind the A
 
 # Modules
 import dns.resolver
@@ -35,6 +29,9 @@ try:
             for adata in aRecord:
                 print(adata)
                 ptrString = adata.to_text()
+                # DELETE
+                ptrString = "40.68.241.53"
+                # DELETE
                 ptrString = '.'.join(reversed(ptrString.split("."))) + ".in-addr.arpa"
                 print (ptrString)
                 try:
@@ -43,7 +40,7 @@ try:
                     maxScore+=1
                     totalScore+=1
 
-                except (dns.resolver.NoAnswer):
+                except (dns.resolver.NXDOMAIN):
                     print('No PTR records for the SMTP server', adata)
                     maxScore += 1
 
