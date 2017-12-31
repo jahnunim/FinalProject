@@ -1,6 +1,3 @@
-### NEED SOME MORE TESTING!
-### TEST EDUCATION.GOV.IL - 81.218.97.38 - TELNET 25 responds with black screen.
-
 # Modules
 import dns.resolver
 import smtplib
@@ -13,7 +10,8 @@ maxScore = 0
 totalScore = 0
 
 # user input: Domain name
-domain = input("Enter domain for TLS supportability check:")
+domain = input("Enter domain for VRFY check:")
+validUser = input("Enter a valid email address:")
 
 # Query for the domain MX
 try:
@@ -37,18 +35,23 @@ try:
                 try:
                     conn = SMTP(adata.to_text())
 
-                    # EHLO request
-                    conn.ehlo()
+                    # HELO request
+                    conn.helo()
 
-                    # Checks if the EHLO response has STARTTLS
-                    if conn.has_extn('STARTTLS'):
+                    # Running the SMTP VRFY command again the server SMTP server.
+                    vrfyResponse = conn.verify(validUser)
+
+                    # Checks if the VRFY returned a valid result.
+                    if "250" in vrfyResponse:
                         maxScore += 1
-                        totalScore += 1
-                        print('Server',adata,"support TLS")
-                    # If server does not support STARTTLS
+                        print('Server',adata,"returns a valid response for VRFY command")
+                        print("VRFY provides attackers a way to query for user / email address validity")
+
+                    # If server blocks VRFY command
                     else:
+                        totalScore += 1
                         maxScore += 1
-                        print("Server",adata, "does not support tls")
+                        print("Server",adata, "does not provide VRFY command")
 
                     # Terminates the SMTP connection
                     conn.quit()
@@ -66,7 +69,6 @@ try:
         # If there are no A records available for that domain
         except (dns.resolver.NoAnswer):
             print('There are not A records for MX', splitMX)
-
 
 # If there is no such domain
 except (dns.resolver.NXDOMAIN):
