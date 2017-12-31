@@ -1,3 +1,6 @@
+#### Not sure that this test gives something.
+# I will put it on hold for the meentime.
+
 # 1. Query MX
 # 2. Query A behind MX
 # 3. Query PTR for IPs behind the A
