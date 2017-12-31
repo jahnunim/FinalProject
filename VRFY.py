@@ -34,9 +34,10 @@ try:
                 print(adata)
                 try:
                     conn = SMTP(adata.to_text())
+                    print("conn passed successfully")
 
                     # HELO request
-                    conn.helo()
+                    SMTP.ehlo_or_helo_if_needed()
 
                     # Running the SMTP VRFY command again the server SMTP server.
                     vrfyResponse = conn.verify(validUser)

@@ -1,5 +1,10 @@
 ### NEED SOME MORE TESTING!
 ### TEST EDUCATION.GOV.IL - 81.218.97.38 - TELNET 25 responds with black screen.
+## Maybe try using SMTP.ehlo_or_helo_if_needed()
+## And react to exception:
+#SMTPHeloError
+#The server didn’t reply properly to the HELO greeting.
+
 
 # Modules
 import dns.resolver
@@ -36,7 +41,7 @@ try:
                 print(adata)
                 try:
                     conn = SMTP(adata.to_text())
-
+                    print("conn passed succesfully")
                     # EHLO request
                     conn.ehlo()
 
