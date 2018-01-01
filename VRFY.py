@@ -1,3 +1,6 @@
+# VRFY.PY checks if the SMTP server behind the MX records are exposed to VRFY command.
+# Attackers can use VRFY command to validate users and email addresses.
+
 # Modules
 import socket
 import dns.resolver
