@@ -14,7 +14,7 @@ fromAddress = "test@openrelay.com"
 toAddress = "test@chukustars.com"
 msg = "Open Relay test"
 
-# Reset: mxRecords, aRecords, maxScore, totalScore?
+# Init
 mxRecords = None
 aRecords = None
 maxScore = 0

@@ -7,7 +7,7 @@
 # Modules
 import dns.resolver
 
-# Reset: DMARC record, totalScore, maxScore
+# Init
 dmarcRecord = None
 maxScore = 3
 totalScore = 0

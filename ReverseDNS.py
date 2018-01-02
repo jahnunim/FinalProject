@@ -4,7 +4,7 @@
 # Modules
 import dns.resolver
 
-# Reset: mxRecord ,aRecord, ptrRecord, maxScore
+# Init
 mxRecord = None
 aRecord = None
 ptrRecord = None

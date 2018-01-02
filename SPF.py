@@ -6,7 +6,7 @@
 import dns.resolver
 
 
-# Reset: spfRecord, totalScore, maxScore
+# Init
 spfRecord = None
 totalScore = 0
 maxScore = 2

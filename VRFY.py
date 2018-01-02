@@ -7,7 +7,7 @@ import dns.resolver
 import smtplib
 from smtplib import SMTP
 
-# Reset: mxRecords, aRecords, maxScore, totalScore?
+# Init
 mxRecords = None
 aRecords = None
 maxScore = 0

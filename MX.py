@@ -5,7 +5,7 @@
 # Modules
 import dns.resolver
 
-# Reset: mxRecords, score?
+# Init
 mxRecords = None
 maxScore = 3
 totalScore = 0

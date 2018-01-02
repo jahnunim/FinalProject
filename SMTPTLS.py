@@ -14,7 +14,7 @@ import smtplib
 from smtplib import SMTP
 
 
-# Reset: mxRecords, aRecords, maxScore, totalScore, hostname
+# Init
 mxRecords = None
 aRecords = None
 maxScore = 0
