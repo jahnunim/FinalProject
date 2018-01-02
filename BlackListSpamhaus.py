@@ -48,13 +48,13 @@ try:
                     # Gets the TXT record to build te link for details.
                     maxScore +=1
                     answer_txt = my_resolver.query(query,"TXT")
-                    print('IP: %s IS listed in %s (%s: %s)' % (myIP, bl, answers[0], answer_txt[0]))
+                    print('IP: %s IS listed in %s (%s: %s)' % (adata, bl, answers[0], answer_txt[0]))
 
                 # Exception raised, IP not listed in BL.
-                except dns.resolver.NXDOMAIN:
+                except(dns.resolver.NXDOMAIN):
                     maxScore += 1
                     totalScore +=1
-                    print('IP: %s is NOT listed in %s' % (myIP, bl))
+                    print('IP: %s is NOT listed in %s' % (adata, bl))
 
         # If there are no MX records available for that domain
         except (dns.resolver.NoAnswer):
