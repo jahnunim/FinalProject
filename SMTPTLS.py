@@ -70,7 +70,7 @@ try:
             print('There is no domain', splitMX)
         # If there are no A records available for that domain
         except (dns.resolver.NoAnswer):
-            print('There are not A records for MX', splitMX)
+            print('There are no A records for MX', splitMX)
 
     # Prints the test's total score
     print('Total TLS score for domain', domain, 'is', totalScore, '/', maxScore)
@@ -81,7 +81,7 @@ except (dns.resolver.NXDOMAIN):
 
 # If there are no MX records available for that domain
 except (dns.resolver.NoAnswer):
-    print('There are not MX records for domain', domain)
+    print('There are no MX records for domain', domain)
 
 # If no nameServers available
 except (dns.resolver.NoNameservers):
