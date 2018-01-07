@@ -5,7 +5,6 @@
 # Modules
 import dns.resolver
 
-
 # Init
 spfRecord = None
 totalScore = 0

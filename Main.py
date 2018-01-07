@@ -1,4 +1,4 @@
-print("Tomer ZAIN and owes METZIZA")
+print("Main")
 import dns.resolver
 
 

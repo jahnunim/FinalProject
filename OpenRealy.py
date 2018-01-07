@@ -11,7 +11,7 @@ import dns.resolver
 import smtplib
 from smtplib import SMTP
 fromAddress = "test@openrelay.com"
-toAddress = "test@chukustars.com"
+toAddress = "test@chukustar.com"
 msg = "Open Relay test"
 
 # Init
