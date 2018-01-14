@@ -3,7 +3,6 @@
 # 2. DMARC actions (none/reject/quarantine)
 # 3. Admin reports
 
-
 # Modules
 import dns.resolver
 
