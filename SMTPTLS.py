@@ -12,7 +12,6 @@ import dns.resolver
 import smtplib
 from smtplib import SMTP
 
-
 # Init
 mxRecords = None
 aRecords = None

@@ -1,3 +1,7 @@
+##########################################################################################################
+##### DMARC.PY HAS REPLACED WITH DMARC2.PY, THIS SHOULD BE REMOVED AND ONLY KEPT FOR TESTING PURPOSES. #####
+##########################################################################################################
+
 # DMARC.PY checks the following:
 # 1. If DMARC record is present
 # 2. DMARC actions (none/reject/quarantine)
