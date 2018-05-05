@@ -47,4 +47,4 @@ class SPF(TestGen.Test):
 
         # Prints the total score of the SPF test
         score_result = TestGen.Test.Score(self, totalScore,maxScore)
-        TestGen.Test.Log(self, domain, 'SCORE', score_result.__str__())
+        TestGen.Test.Log(self, domain, 'SCORE SPF', score_result.__str__())

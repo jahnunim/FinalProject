@@ -58,8 +58,8 @@ class Test:
     def say_hi(self):
         print('Hello, my name is', self.name)
 
-p = Test('valensiweb.com')
-p.InitialLog()
+#p = Test('valensiweb.com')
+#p.InitialLog()
 #p.get_dns_records('Chuku2', 'MX')
 #p.get_dns_records('Chuku3', 'TXT')
 
