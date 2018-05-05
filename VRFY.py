@@ -80,7 +80,6 @@ try:
 except (dns.resolver.NXDOMAIN):
     print('There is no domain', domain)
 
-# If there are no MX records available for that domain
 except (dns.resolver.NoAnswer):
     print('There are no MX records for domain', domain)
 
