@@ -6,8 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/venv" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/venv/Lib/site-packages/dnspython-1.15.0.dist-info" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/env" />
+      <excludeFolder url="file://$MODULE_DIR$/venv1" />
+      <excludeFolder url="file://$MODULE_DIR$/venv2" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.6 (FinalProject)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.6 (venv2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
