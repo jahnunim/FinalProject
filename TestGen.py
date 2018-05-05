@@ -47,6 +47,7 @@ class Test:
         test_file.writelines(domain + ",")
         test_file.writelines(testname + ",")
         test_file.writelines(info)
+        test_file.writelines("\n")
         test_file.close()
 
     def Score(self, current, max):
