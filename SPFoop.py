@@ -8,9 +8,12 @@ import TestGen
 class SPF(TestGen.Test):
     def __init__(self, domain):
         self.domain = domain
+        self.InitialLog()
 
     def SPFcheck(self, domain):
         # Init
+        spf_object = SPF(domain)
+
         spfRecord = None
         totalScore = 0
         maxScore = 0
@@ -25,7 +28,7 @@ class SPF(TestGen.Test):
                 totalScore += 1
                 spfRecord = rdata.to_text()
                 info = 'SPF in place', spfRecord
-                TestGen.Test.Log(self, domain, 'SPF', info)
+                spf_object.Log(domain, 'SPF', info)
 
                 # If SPF is present and configured with HardFail -
                 if "-all" in spfRecord:
@@ -33,18 +36,19 @@ class SPF(TestGen.Test):
                     totalScore += 1
 
                     info = "HardFail inplace"
-                    TestGen.Test.Log(self, domain, 'SPF', info)
+                    spf_object.Log(domain, 'SPF', info)
                 # If HardFail not inplace
                 else:
                     maxScore +=1
                     info = "HardFail is not in place"
-                    TestGen.Test.Log(self, domain, 'SPF', info)
+                    spf_object.Log(domain, 'SPF', info)
                 break
 
         # Checks if SPF test passed:
         if spfRecord is None:
-            TestGen.Test.Log(self, domain, 'SPF','is exposed to spoofing attacks')
+            spf_object.Log(domain, 'SPF','is exposed to spoofing attacks')
 
         # Prints the total score of the SPF test
-        score_result = TestGen.Test.Score(self, totalScore,maxScore)
-        TestGen.Test.Log(self, domain, 'SCORE SPF', score_result.__str__())
+        score_result = spf_object.Score(totalScore,maxScore)
+        spf_object.Log(domain, 'SCORE SPF', score_result.__str__())
+        return (score_result)
