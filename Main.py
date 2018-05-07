@@ -9,8 +9,8 @@ import SPFoop
 
 p1 = SPFoop.SPF('valensiweb.com')
 p1.SPFcheck('valensiweb.com')
-p4 = SPFoop.SPF('kakipipikakipipikakipipi.com')
-p4.SPFcheck('kakipipikakipipikakipipi.com')
+p4 = SPFoop.SPF('RonandSharonnosuchdomain.com')
+p4.SPFcheck('RonandSharonnosuchdomain.com')
 p2 = SPFoop.SPF('nice.com')
 p2.SPFcheck('nice.com')
 p3 = SPFoop.SPF('chukustar.com')
