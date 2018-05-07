@@ -1,38 +1,48 @@
 import dns.resolver
 import datetime
+import os.path
+
 
 Logpath = "c:/temp/testfile.txt"
+testID = 1
 
 class Test:
     def __init__(self, domain):
         self.domain = domain
         self.InitialLog()
 
-    def get_dns_records(self, domain, record_type):
+    def get_dns_records(self, domain, record_type, method_name):
         try:
             answers = dns.resolver.query(domain, record_type)
             return answers
         # If there is no such domain
         except (dns.resolver.NXDOMAIN):
-            error = 'There is no Domain'
-            self.Log(domain, 'get_dns_record', error)
+            error = 'There is no such Domain'
+            self.Log(domain, method_name, error)
+            answers = -1
+            return answers
         # If there are no MX records available for that domain
         except (dns.resolver.NoAnswer):
             if (record_type == 'MX'):
-                error = 'There is no', record_type, ' records for domain'
-                self.Log(domain, 'get_dns_record', error.__str__())
+                error = 'There are no ', record_type, ' records for domain'
+                self.Log(domain, method_name, error.__str__())
             else:
-                error = 'The domain ', domain, 'is exposed to spoffing attacks'
-                self.Log(domain, 'get_dns_record', error)
+                error = 'There are no ', record_type, ' records for domain'
+                self.Log(domain, method_name, error)
         # If no nameServers available
         except (dns.resolver.NoNameservers):
             error = 'No name servers found'
-            self.Log(domain, 'get_dns_record', error)
+            self.Log(domain, method_name, error)
+            answers = -1
+            return answers
 
     def InitialLog(self):
-        test_file = open(Logpath, 'w+')
-        test_file.writelines('date,time,domain,testname,info' + '\n')
-        test_file.close()
+        if os.path.isfile(Logpath):
+            test_file = open(Logpath, 'a')
+        else:
+            test_file = open(Logpath, 'a')
+            test_file.writelines('testID,date,time,domain,testname,info' + '\n')
+            test_file.close()
 
     def Log(self, domain, testname, info):
         self.testname = testname
@@ -42,6 +52,7 @@ class Test:
         datestr = time.strftime('%m/%d/%Y')
         timestr = time.strftime('%H:%M:%S')
 
+        test_file.writelines(testID.__str__() + ",")
         test_file.writelines(datestr + ",")
         test_file.writelines(timestr + ",")
         test_file.writelines(domain + ",")
@@ -52,7 +63,10 @@ class Test:
 
     def Score(self, current, max):
         self.score = 0
-        result = current / max * 100
+        if max is not 0:
+            result = current / max * 100
+        else:
+            result = 0
         return (result)
 
     def say_hi(self):
