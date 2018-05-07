@@ -19,7 +19,7 @@ class SPF(TestGen.Test):
         maxScore = 0
 
         # Querying for the domain's TXT records
-        answers = TestGen.Test.get_dns_records(self, domain, 'TXT')
+        answers = spf_object.get_dns_records(domain, 'TXT')
 
         # Enumarates through all of the TXT records and pulls the SPF record
         for rdata in answers:
