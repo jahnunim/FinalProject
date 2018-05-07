@@ -1,15 +1,11 @@
 print("Main")
 import SPFoop
 
-# get domain list from file
-# export to file -  resulter
-# OOP:
-    # scoring
-    # Ctor
-    # Dtor
-# logger (another py?) (time, test name, input, output)
+# get domain list from file?? RestAPI??
+# initilize log file. where?
 # coding style - phyton
 # Rest API
+# get domain by init or by method SPFcheck
 
 p1 = SPFoop.SPF('valensiweb.com')
 p1.SPFcheck('valensiweb.com')
