@@ -8,7 +8,7 @@ import TestGen
 class SPF(TestGen.Test):
     def __init__(self, domain):
         self.domain = domain
-        self.InitialLog()
+        TestGen.Test.InitialLog(self)
 
     def SPFcheck(self, domain):
         # Init
