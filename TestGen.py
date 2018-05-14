@@ -76,6 +76,3 @@ class Test:
 #p.InitialLog()
 #p.get_dns_records('Chuku2', 'MX')
 #p.get_dns_records('Chuku3', 'TXT')
-
-# The previous 2 lines can also be written as
-# Person().say_hi()

@@ -16,7 +16,6 @@ class SPF(TestGen.Test):
     def SPFcheck(self, domain):
         # Init
         spf_object = SPF(domain)
-
         spfRecord = None
         totalScore = 0
         maxScore = 0
