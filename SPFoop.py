@@ -6,9 +6,12 @@
 import TestGen
 
 class SPF(TestGen.Test):
+    name = 'SPF'
+    #TODO: send spf_object the class and the logging will take the class object
     def __init__(self, domain):
         self.domain = domain
         TestGen.Test.InitialLog(self)
+
 
     def SPFcheck(self, domain):
         # Init

@@ -6,6 +6,8 @@ import SPFoop
 # coding style - phyton
 # Rest API
 # get domain by init or by method SPFcheck
+#TODO: one dicetonery MX and IP and save result. save 2nd run for the same MX
+
 
 p1 = SPFoop.SPF('valensiweb.com')
 p1.SPFcheck('valensiweb.com')
