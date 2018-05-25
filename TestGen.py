@@ -17,9 +17,12 @@ class Test:
             return answers
         # If there is no such domain
         except (dns.resolver.NXDOMAIN):
-            error = 'There is no such Domain'
+            if method_name is 'DMARC':
+                error = 'DMARC record is not in place for domain. domain is exposed to spoofing attacks'
+            else:
+                error = 'There is no such Domain'
             self.Log(domain, method_name, error)
-            answers = -1
+            answers = -2
             return answers
         # If there are no MX records available for that domain
         except (dns.resolver.NoAnswer):
