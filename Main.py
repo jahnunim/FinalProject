@@ -10,49 +10,54 @@ import json
 # get domain by init or by method SPFcheck
 #TODO: one dicetonery MX and IP and save result. save 2nd run for the same MX
 
-def DicBuild(domain_name):
-    try:
-        # Querying for the domain's MX records
-        mx_records = dns.resolver.query(domain_name, 'MX')
+def DicBuild(domain_list):
+    # Create Dictionary from domain list
+    for domain in domain_list:
+        domains_dic[domain] = {}
+        output = SPFoop(domain)
+        domains_dic[domain]['SPF'] = {'grade':output.score,'info':output.info,'info_json':output.info}
+        domains_dic[domain]['DMARC'] = {'grade':output.score,'info':output.info,'info_json':output.info}
 
-        # Enumerates through all the domain's MX records
-        for rdata in mx_records:
-            split_mx = (rdata.to_text().split(" "))[1]
-            split_mx = split_mx[:-1]
+        try:
+            # Querying for the domain's MX records
+            mx_records = dns.resolver.query(domain_name, 'MX')
 
-            # Tries to pull all A records behind the MX record
-            try:
-                # Query for A records
-                aRecords = dns.resolver.query(split_mx,'A')
+            # Enumerates through all the domain's MX records
+            for rdata in mx_records:
+                split_mx = (rdata.to_text().split(" "))[1]
+                split_mx = split_mx[:-1]
 
-                # Enumerates through all A records behind the MX record.
-                for adata in aRecords:
-                    if adata not in domains_dic:
-                        domains_dic[domain_name] = {}
-                        domains_dic[domain_name][adata] = {}
-                        domains_dic[domain_name][adata][split_mx] = {}
-            # If there is no such domain
-            except (dns.resolver.NXDOMAIN):
-                print('There is no domain', split_mx)
-            # If there are no A records available for that domain
-            except (dns.resolver.NoAnswer):
-                print('There are no A records for MX', split_mx)
+                # Tries to pull all A records behind the MX record
+                try:
+                    # Query for A records
+                    aRecords = dns.resolver.query(split_mx,'A')
 
-    # If there is no such domain
-    except (dns.resolver.NXDOMAIN):
-        print('There is no domain', domain)
+                    # Enumerates through all A records behind the MX record.
+                    for adata in aRecords:
+                        if adata not in domains_dic:
+                            domains_dic[domain][adata] = {'mx':split_mx,'tests':{}}
+                # If there is no such domain
+                except (dns.resolver.NXDOMAIN):
+                    print('There is no domain', split_mx)
+                # If there are no A records available for that domain
+                except (dns.resolver.NoAnswer):
+                    print('There are no A records for MX', split_mx)
 
-    # If there are no MX records available for that domain
-    except (dns.resolver.NoAnswer):
-        print('There are no MX records for domain', domain)
+        # If there is no such domain
+        except (dns.resolver.NXDOMAIN):
+            print('There is no domain', domain)
 
-    # If no nameServers available
-    except (dns.resolver.NoNameservers):
-        print('No name servers found')
+        # If there are no MX records available for that domain
+        except (dns.resolver.NoAnswer):
+            print('There are no MX records for domain', domain)
 
-    with open('domains.json', 'w') as data_file:
-        json.dump(domains_dic, data_file)
-        data_file.close
+        # If no nameServers available
+        except (dns.resolver.NoNameservers):
+            print('No name servers found')
+
+        with open('domains.json', 'w') as data_file:
+            json.dump(domains_dic, data_file)
+            data_file.close
     #dmp = json.dump(domains_dic,fp="c:/temp/dump.txt")
     #for x in domains_dic:
     #    for y in domains_dic[x]:

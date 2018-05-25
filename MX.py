@@ -1,6 +1,7 @@
 # MX.PY checks if the domain has multiple MX records
 # Advise to make sure additional MX endpoints are secured as the primary endpoint.
 
+# Domain based test
 
 # Modules
 import dns.resolver

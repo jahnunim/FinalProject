@@ -1,6 +1,8 @@
 # REVERSEDNS.PY checks if the MX records behind the domain has PTR.
 # If PTR is missing, the domain's SMTP connection might be rejected due to Reverse DNS test.
 
+# IP TEST
+
 # Modules
 import dns.resolver
 
