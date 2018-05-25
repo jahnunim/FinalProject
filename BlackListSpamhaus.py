@@ -2,6 +2,8 @@
 # This to ensure that email from your organization won't be rejected.
 # If your email servers are listed on a BlackList it may indicate for any potential abuse of your servers.
 
+# IP based domain
+
 # Modules
 import dns.resolver
 

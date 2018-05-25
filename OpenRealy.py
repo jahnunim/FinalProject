@@ -4,6 +4,7 @@
 
 # NEED TO CHECK WITH AN OPEN RELAY SERVER THAT THE TEST PASSES.#
 
+# IP based test
 
 # Modules
 import socket
