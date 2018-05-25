@@ -10,13 +10,20 @@ import json
 # get domain by init or by method SPFcheck
 #TODO: one dicetonery MX and IP and save result. save 2nd run for the same MX
 
-def DicBuild(domain_list):
-    # Create Dictionary from domain list
-    for domain in domain_list:
-        domains_dic[domain] = {}
+def DicBuild(domains_list):
+    ip_results_dict = {}
+
+    # Top enumeration through all domains
+    for domain in domains_list:
+        domains_dict[domain] = {}
+        # Calling the SPF test for domain
         output = SPFoop(domain)
-        domains_dic[domain]['SPF'] = {'grade':output.score,'info':output.info,'info_json':output.info}
-        domains_dic[domain]['DMARC'] = {'grade':output.score,'info':output.info,'info_json':output.info}
+        # Adds SPF test output to the dictionary.
+        domains_dict[domain]['tests']['SPF'] = {'grade': (output.split('%'))[1], 'info': (output.split('%'))[0],
+                                      'info_json': (output.split('%'))[0]}
+
+        #domains_dict[domain]['DMARC'] = {'grade':(output.split('%'))[1],'info':(output.split('%'))[0],'info_json':(output.split('%'))[0]}
+        #domains_dict[domain]['MX'] = {'grade':(output.split('%'))[1],'info':(output.split('%'))[0],'info_json':(output.split('%'))[0]}
 
         try:
             # Querying for the domain's MX records
@@ -34,8 +41,30 @@ def DicBuild(domain_list):
 
                     # Enumerates through all A records behind the MX record.
                     for adata in aRecords:
-                        if adata not in domains_dic:
-                            domains_dic[domain][adata] = {'mx':split_mx,'tests':{}}
+                        if adata not in ip_results_dict:
+                            ip_results_dict[adata] = {}
+
+                            domains_dict[domain][adata] = {'mx':split_mx,'tests':{}}
+                            # SMTPTLS
+                            output=smtptls(adata)
+                            domains_dict[domain][adata]['tests']['SMTPTLS'] = {'grade': (output.split('%'))[1], 'info': (output.split('%'))[0],
+                                      'info_json': (output.split('%'))[0]}
+
+                            ip_results_dict[adata]['SMTPTLS'] = {'score': (output.split('%'))[1],
+                                                                 'info': (output.split('%'))[0],
+                                                                 'info_json': (output.split('%'))[0]}
+                        else:
+                            score = (ip_results_dict[adata]['SMTPTLS']).get("score", "")
+                            info = (ip_results_dict[adata]['SMTPTLS']).get("info", "")
+
+                            if adata not in domains_dictt[domain]:
+                                domains_dict[domain][adata] = {}
+                                domains_dict[domain][adata]['tests'] = {}
+
+                            domains_dict[domain][adata]['tests']['SMTPTLS'] = {'score': score,
+                                                                               'info': info,
+                                                                               'info_json': info}
+
                 # If there is no such domain
                 except (dns.resolver.NXDOMAIN):
                     print('There is no domain', split_mx)
@@ -56,22 +85,17 @@ def DicBuild(domain_list):
             print('No name servers found')
 
         with open('domains.json', 'w') as data_file:
-            json.dump(domains_dic, data_file)
+            json.dump(domains_dict, data_file)
             data_file.close
-    #dmp = json.dump(domains_dic,fp="c:/temp/dump.txt")
-    #for x in domains_dic:
-    #    for y in domains_dic[x]:
-    #        print(y, ':', domains_dic[x][y])
+    #dmp = json.dump(domains_dict,fp="c:/temp/dump.txt")
+    #for x in domains_dict:
+    #    for y in domains_dict[x]:
+    #        print(y, ':', domains_dict[x][y])
 
-    print (json.dump(domains_dic, indent=4, sort_keys=True))
+    print (json.dump(domains_dict, indent=4, sort_keys=True))
 
 domains_list = ['valensiweb.com','chukustar.com','ronandsharontestdomain.com']
-domains_dic = {}
-
-
-
-for domain in domains_list:
-    DicBuild(domain)
+DicBuild(domains_list)
 
 #p1 = SPFoop.SPF('valensiweb.com')
 #p1.SPFcheck('valensiweb.com')
