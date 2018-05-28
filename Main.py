@@ -127,6 +127,7 @@ def DicBuild(domains_list):
         # Checks if the MX passed sucessfully.
         if (mxResults == dns.resolver.NoNameservers):
             domains_dict[domain] = {'Error':'No DNS server found'}
+            # TODO: LOGGING and increase general attribute
             break
         elif (mxResults == dns.resolver.NXDOMAIN):
             domains_dict[domain] = {'Error': 'No such domain found'}
@@ -148,10 +149,14 @@ def DicBuild(domains_list):
         #############
         # SPF logic #
         #############
-        #output = SPFoop(domain)
+        spfObj = SPFoop.SPF(domain)
+        output = spfObj.SPFcheck(domain)
         #Updates primary dictionary.
-        domains_dict[domain]['tests']['SPF'] = {'grade': (output.split('%'))[1], 'info': (output.split('%'))[0],
+        domains_dict[domain]['tests'][SPF] = {'grade': (output.split('%'))[1], 'info': (output.split('%'))[0],
                                       'info_json': (output.split('%'))[0]}
+
+        #output = 'just some info for tests%55'
+
         ################
         # DMARC logic #
         ################
@@ -180,7 +185,8 @@ def DicBuild(domains_list):
                 # TODO: SMTPTLS call
                 # output=smtptls(adata)
                 # updates primary dictionary
-                domains_dict[domain][ip_key]['tests']['SMTPTLS'] = {'grade': (output.split('%'))[1],
+                output = 'just some info for tests%55'
+                domains_dict[domain][ip_key]['tests'][SMTPTLS] = {'grade': (output.split('%'))[1],
                                                                    'info': (output.split('%'))[0],
                                                                    'info_json': (output.split('%'))[0]}
 
@@ -188,12 +194,13 @@ def DicBuild(domains_list):
                 #ip_results_dict = update_ip_dict_results(ip_results_dict,ip,'SMTPTLS',output)
 
                 # Updates the IP_RESULTS dictionary
-                ip_results_dict[ip_key]['SMTPTLS'] = {'score': (output.split('%'))[1],
+                output = 'just some info for tests%55'
+                ip_results_dict[ip_key][SMTPTLS] = {'score': (output.split('%'))[1],
                                                      'info': (output.split('%'))[0],
                                                      'info_json': (output.split('%'))[0]}
             else:
                 # Updates the primary dictionary from the IP results dictionary
-                domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, 'SMTPTLS')
+                domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, SMTPTLS)
 
     return(domains_dict)
 
