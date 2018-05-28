@@ -25,6 +25,7 @@ class DMARC(TestGen.Test):
         # Builds the DMARC domain
         dmarcdomain = '_dmarc.' + domain
 
+        # TODO: DELETE A QUERY
         # Query for the existence of domain
         answers = dmarc_object.get_dns_records(domain, 'A', 'DMARC')
         #if answers is None:
@@ -88,10 +89,10 @@ class DMARC(TestGen.Test):
                                 info_send += "DMARC has no administrator reports address configured. "
                                 dmarc_object.Log(domain, 'DMARC', info)
                             break
-        # Prints the total score of the SPF test
+        # Logs and return the total score of the DMARC test
         score_result = dmarc_object.Score(totalScore, maxScore)
         score_result = "%" + score_result.__str__()
-        dmarc_object.Log(domain, 'SCORE SPF', score_result)
+        dmarc_object.Log(domain, 'SCORE DMARC', score_result)
         info_send += score_result
         TestGen.testID += 1
 

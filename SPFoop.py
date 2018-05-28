@@ -23,7 +23,7 @@ class SPF(TestGen.Test):
         # Querying for the domain's TXT records
         answers = spf_object.get_dns_records(domain, 'TXT', 'SPF')
         if answers is None:
-            info_send += "is exposed to spoffing attacks. "
+            info_send += "The domain is exposed to spoffing attacks. "
             spf_object.Log(domain, 'SPF', 'is exposed to spoofing attacks')
         elif answers is -1:
             score_result = "%-1"
@@ -66,7 +66,7 @@ class SPF(TestGen.Test):
         # Checks if SPF test passed:
 
 
-        # Prints the total score of the SPF test
+        # Logs and return the total score of the SPF test
         score_result = spf_object.Score(totalScore,maxScore)
         score_result = "%" + score_result.__str__()
         spf_object.Log(domain, 'SCORE SPF', score_result)

@@ -44,7 +44,7 @@ class Test:
             test_file = open(Logpath, 'a')
         else:
             test_file = open(Logpath, 'a')
-            test_file.writelines('testID,date,time,domain,testname,info' + '\n')
+            test_file.writelines('testID,date,time,domain/IP address,testname,info' + '\n')
             test_file.close()
 
     def Log(self, domain, testname, info):

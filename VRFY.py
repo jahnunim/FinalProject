@@ -16,7 +16,7 @@ hostname = socket.gethostname()
 
 # user input: Domain name
 domain = input("Enter domain for VRFY check:")
-validUser = input("Enter a valid email address:")
+validUser = 'administrator@' + domain
 
 # Query for the domain MX
 try:
@@ -37,7 +37,9 @@ try:
             for adata in aRecords:
                 # Tries to make connection to the SMTP server (in 25).
                 print(adata)
+
                 try:
+                    # TODO: host=adata.to_text() CHANGE TO host=ip.to_text()
                     conn = SMTP(host=adata.to_text(),local_hostname=hostname)
                     print("conn passed successfully")
 

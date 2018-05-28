@@ -1,6 +1,7 @@
 print("Main")
-import SPFoop
+import SPFoop, SMTPTLSoop
 import DMARCoop
+import MXoop
 import dns.resolver
 import json
 
@@ -38,6 +39,23 @@ print(info1)
 print(info2)
 print(info3)
 print(info4)
+
+p1 = MXoop.MX('valensiweb.com')
+info1 = p1.MXcheck('valensiweb.com')
+p4 = MXoop.MX('RonandSharonnosuchdomain.com')
+#info4 = p4.MXcheck('RonandSharonnosuchdomain.com')
+p2 = MXoop.MX('nice.com')
+info2 = p2.MXcheck('nice.com')
+p3 = MXoop.MX('chukustar.com')
+info3 = p3.MXcheck('chukustar.com')
+
+print(info1)
+print(info2)
+print(info3)
+#print(info4)
+
+p1 = SMTPTLSoop.SMTPTLS("80.178.124.203")
+info1 = p1.SMTPTLScheck("80.178.124.203")
 
 #TODO: closing file and delete
 

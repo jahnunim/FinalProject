@@ -1,7 +1,7 @@
 print("Main")
 
 # Imports
-import SPFoop
+import SPFoop, DMARCoop, MXoop, SMTPTLSoop
 import dns.resolver
 import json
 
@@ -161,13 +161,17 @@ def DicBuild(domains_list):
         # DMARC logic #
         ################
         #TODO: Call DMARC # output = DMARC()
-        #domains_dict[domain]['DMARC'] = {'grade':(output.split('%'))[1],'info':(output.split('%'))[0],'info_json':(output.split('%'))[0]}
+        dmarcObj = DMARCoop.DMARC(domain)
+        output = dmarcObj.DMARCcheck(domain)
+        domains_dict[domain]['DMARC'] = {'grade':(output.split('%'))[1],'info':(output.split('%'))[0],'info_json':(output.split('%'))[0]}
 
         #############
         # MX logic #
         #############
         #TODO: Call MX # output = MX()
-        #domains_dict[domain]['MX'] = {'grade':(output.split('%'))[1],'info':(output.split('%'))[0],'info_json':(output.split('%'))[0]}
+        mxObj = MXoop.MX(domain)
+        output = mxObj.MXcheck(domain)
+        domains_dict[domain]['MX'] = {'grade':(output.split('%'))[1],'info':(output.split('%'))[0],'info_json':(output.split('%'))[0]}
 
         # Tests in IP level: OpenRelay, SMTPTLS, VRFY
         for ip_key in ips_dict:
@@ -185,7 +189,9 @@ def DicBuild(domains_list):
                 # TODO: SMTPTLS call
                 # output=smtptls(adata)
                 # updates primary dictionary
-                output = 'just some info for tests%55'
+                smtptlsObj = SMTPTLSoop.SMTPTLS(ip_key)
+                output = smtptlsObj.SMTPTLScheck(ip_key)
+                #output = 'just some info for tests%55'
                 domains_dict[domain][ip_key]['tests'][SMTPTLS] = {'grade': (output.split('%'))[1],
                                                                    'info': (output.split('%'))[0],
                                                                    'info_json': (output.split('%'))[0]}
@@ -198,6 +204,8 @@ def DicBuild(domains_list):
                 ip_results_dict[ip_key][SMTPTLS] = {'score': (output.split('%'))[1],
                                                      'info': (output.split('%'))[0],
                                                      'info_json': (output.split('%'))[0]}
+
+                
             else:
                 # Updates the primary dictionary from the IP results dictionary
                 domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, SMTPTLS)
