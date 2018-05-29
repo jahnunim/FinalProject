@@ -2,7 +2,6 @@
 # This to ensure that email from your organization won't be rejected.
 # If your email servers are listed on a BlackList it may indicate for any potential abuse of your servers.
 
-# IP based domain
 
 # Modules
 import dns.resolver
@@ -10,7 +9,6 @@ import TestGen
 
 class BlackList(TestGen.Test):
     name = 'BlackList'
-    #TODO: send spf_object the class and the logging will take the class object
     def __init__(self, ip_string):
         self.ip_string = ip_string
         TestGen.Test.InitialLog(self)
