@@ -54,7 +54,6 @@ class OpenRelay(TestGen.Test):
             except(smtplib.SMTPRecipientsRefused):
                 totalScore += 1
                 maxScore += 1
-                print("Server", adata, "is not an open relay")
                 info_send += "Server is not an Open Relay"
                 relay_object.Log(ip_string, 'OpenRelay', 'Server is not an Open Relay')
 
