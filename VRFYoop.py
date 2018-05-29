@@ -1,7 +1,6 @@
 # VRFY.PY checks if the SMTP server behind the MX records are exposed to VRFY command.
 # Attackers can use VRFY command to validate users and email addresses.
 
-# TODO: I SEND YOU IP AND DOMAIN!!!!! YOU BUILD THE VALID USER STRING WITH "administrator@"+DOMAIN
 
 # Modules
 import socket
@@ -11,7 +10,6 @@ from smtplib import SMTP
 
 class VRFY(TestGen.Test):
     name = 'VRFY'
-    #TODO: send spf_object the class and the logging will take the class object
     def __init__(self, ip_string):
         self.ip_string = ip_string
         TestGen.Test.InitialLog(self)
@@ -26,7 +24,7 @@ class VRFY(TestGen.Test):
         info_send = ""
         hostname = socket.gethostname()
         # Build user address
-        validUser = "administrator@" + domain
+        validUser = "info@" + domain
 
         try:
             conn = SMTP(host=ip_string,local_hostname=hostname,timeout=10)
@@ -61,6 +59,14 @@ class VRFY(TestGen.Test):
             vrfy_object.Log(ip_string, 'VRFY', info)
             return (info_send)
 
+            # If the server refused our HELO message.
+        except(smtplib.SMTPHeloError):
+            info = "The server " + ip_string + "refused our HELO message"
+            info_send += "The server " + ip_string + "refused our HELO message" + "%-1"
+            SMTPTLS_object.Log(ip_string, 'SMTPTLS', info)
+            return (info_send)
+
+        # If the server did not respond within the socket timeout window.
         except(socket.timeout):
             info = "Initial connection failed with timeout to IP " + ip_string
             info_send += "Initial connection failed with timeout to ip" + ip_string + "%-1"

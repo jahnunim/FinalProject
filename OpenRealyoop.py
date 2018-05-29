@@ -2,9 +2,6 @@
 # If a server is an open relay, it can easily be put into Black Lists
 # or be used by attackers as a "proxy" smtp for attacks.
 
-# NEED TO CHECK WITH AN OPEN RELAY SERVER THAT THE TEST PASSES.#
-
-# IP based test
 
 # Modules
 import socket

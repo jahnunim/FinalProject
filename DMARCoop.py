@@ -3,6 +3,9 @@
 # 2. DMARC actions (none/reject/quarantine)
 # 3. Admin reports
 
+# TODO: CHANGING TO DICTIONARY FORMAT
+
+
 # Modules
 import TestGen
 

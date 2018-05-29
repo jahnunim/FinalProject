@@ -61,6 +61,13 @@ class SMTPTLS(TestGen.Test):
             SMTPTLS_object.Log(ip_string, 'SMTPTLS', info)
             return (info_send)
 
+        # If the server refused our HELO message.
+        except(smtplib.SMTPHeloError):
+            info = "The server " + ip_string + "refused our HELO message"
+            info_send += "The server " + ip_string + "refused our HELO message" + "%-1"
+            SMTPTLS_object.Log(ip_string, 'SMTPTLS', info)
+            return (info_send)
+
         except(socket.timeout):
             info = "Initial connection failed with timeout to IP " + ip_string
             info_send += "Initial connection failed with timeout to ip" + ip_string + "%-1"
