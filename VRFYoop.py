@@ -16,23 +16,22 @@ class VRFY(TestGen.Test):
         self.ip_string = ip_string
         TestGen.Test.InitialLog(self)
 
-    def VRFYcheck(self, ip_string):
+    def VRFYcheck(self, ip_string, domain):
         # Init
         mxRecords = None
         aRecords = None
+        vrfy_object = VRFY(ip_string)
         maxScore = 0
         totalScore = 0
+        info_send = ""
         hostname = socket.gethostname()
+        # Build user address
+        validUser = "administrator@" + domain
 
-        # user input: Domain name
-        domain = input("Enter domain for VRFY check:")
-
-        # TODO: What to do with the valid email address - Ron need to answer
-        validUser = input("Enter a valid email address:")
         try:
-            # TODO: host=adata.to_text() CHANGE TO host=ip.to_text()
-            conn = SMTP(host=ip_string,local_hostname=hostname)
-            print("conn passed successfully")
+            conn = SMTP(host=ip_string,local_hostname=hostname,timeout=10)
+
+            vrfy_object.Log(ip_string, 'VRFY', 'conn passed successfully')
 
             # HELO request
             conn.ehlo_or_helo_if_needed()
@@ -43,22 +42,38 @@ class VRFY(TestGen.Test):
             # Checks if the VRFY returned a valid result.
             if "250" in vrfyResponse:
                 maxScore += 1
-                print('Server',adata,"returns a valid response for VRFY command")
-                print("VRFY provides attackers a way to query for user / email address validity")
-
+                info_send += "Server returns a valid response for VRFY command. VRFY provides attackers a way to query for user / email address validity"
+                vrfy_object.Log(ip_string, 'VRFY', 'Server returns a valid response for VRFY command. VRFY provides attackers a way to query for user / email address validity')
             # If server blocks VRFY command
             else:
                 totalScore += 1
                 maxScore += 1
-                print("Server",adata, "does not provide VRFY command")
+                info_send += "Server does not provide VRFY command"
+                vrfy_object.Log(ip_string, 'VRFY', 'Server does not provide VRFY command')
 
             # Terminates the SMTP connection
             conn.quit()
 
         # If no connection to the SMTP server
         except(smtplib.socket.gaierror):
-            print("Unable to establish SMTP connection to server:", adata)
+            info = "Unable to establish SMTP connection to server: " + ip_string
+            info_send += "Unable to establish SMTP connection to server: " + ip_string + "%-1"
+            vrfy_object.Log(ip_string, 'VRFY', info)
+            return (info_send)
+
+        except(socket.timeout):
+            info = "Initial connection failed with timeout to IP " + ip_string
+            info_send += "Initial connection failed with timeout to ip" + ip_string + "%-1"
+            vrfy_object.Log(ip_string, 'VRFY', info)
+            return (info_send)
 
 # Prints the test's total score
-print('Total TLS score for domain', domain, 'is', totalScore, '/', maxScore)
+# Logs and return the total score of the VRFYTLS test
+        score_result = vrfy_object.Score(totalScore, maxScore)
+        score_result = "%" + score_result.__str__()
+        vrfy_object.Log(ip_string, 'SCORE VRFY', score_result)
+        info_send += score_result
+        TestGen.testID += 1
+
+        return (info_send)
 
