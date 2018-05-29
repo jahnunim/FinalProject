@@ -53,6 +53,7 @@ def update_from_IP_dict(dict_to_update,ip_results_dict,domain,ip,test_name):
 # Get MX records for domain
 # INPUT: domain to pull the MX records for.
 ####################################################
+# TODO: maybe here add +1 testgen and Log function.. there is another todo. check where is better to do so
 def get_mx(domain):
     try:
         # Queries the DNS for the MX records
