@@ -42,15 +42,15 @@ class BlackList(TestGen.Test):
             # Gets the TXT record to build te link for details.
             maxScore +=1
             answer_txt = my_resolver.query(query,"TXT")
-            info_send += 'IP: %s IS listed in %s (%s: %s)' % (adata, bl, answers[0], answer_txt[0])
-            info = 'IP: %s IS listed in %s (%s: %s)' % (adata, bl, answers[0], answer_txt[0])
+            info_send += 'IP: %s IS listed in %s (%s: %s)' % (ip_string, bl, answers[0], answer_txt[0])
+            info = 'IP: %s IS listed in %s (%s: %s)' % (ip_string, bl, answers[0], answer_txt[0])
             bl_object.Log(ip_string, 'BlackListSpamhaus', info)
         # Exception raised, IP not listed in BL.
         except(dns.resolver.NXDOMAIN):
             maxScore += 1
             totalScore +=1
-            info_send += 'IP: %s is NOT listed in %s' % (adata, bl)
-            info = 'IP: %s is NOT listed in %s' % (adata, bl)
+            info_send += 'IP: %s is NOT listed in %s' % (ip_string, bl)
+            info = 'IP: %s is NOT listed in %s' % (ip_string, bl)
             bl_object.Log(ip_string, 'BlackListSpamhaus', info)
 
         score_result = bl_object.Score(totalScore, maxScore)
