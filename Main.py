@@ -1,7 +1,7 @@
 print("Main")
 
 # Imports
-import SPFoop, DMARCoop, MXoop, SMTPTLSoop, VRFYoop, OpenRealyoop, ReverseDNSoop
+import SPFoop, DMARCoop, MXoop, SMTPTLSoop, VRFYoop, OpenRealyoop, ReverseDNSoop, BlackListSpamhausoop
 import dns.resolver
 import json
 
@@ -249,8 +249,8 @@ def DicBuild(domains_list):
                 ###############
                 # Reverse DNS #
                 ###############
-                reverseDNS = ReverseDNSoop.ReverseDNS(ip_key)
-                output = reverseDNS.ReverseDNScheck(ip_key)
+                reversednsObj = ReverseDNSoop.ReverseDNS(ip_key)
+                output = reversednsObj.ReverseDNScheck(ip_key)
                 # output = 'just some info for tests%55'
                 domains_dict[domain][ip_key]['tests'][REVERSEDNS] = {'grade': (output.split('%'))[1],
                                                                     'info': (output.split('%'))[0],
@@ -264,11 +264,32 @@ def DicBuild(domains_list):
                                                       'info': (output.split('%'))[0],
                                                       'info_json': (output.split('%'))[0]}
 
+                ######################
+                # Blacklist Spamhaus #
+                ######################
+                blacklistObj = BlackListSpamhausoop.BlackList(ip_key)
+                output = blacklistObj.BlackListcheck(ip_key)
+                # output = 'just some info for tests%55'
+                domains_dict[domain][ip_key]['tests'][BLSPAMHAUS] = {'grade': (output.split('%'))[1],
+                                                                     'info': (output.split('%'))[0],
+                                                                     'info_json': (output.split('%'))[0]}
+
+                # In case using update_ip_dict func will be used
+                # ip_results_dict = update_ip_dict_results(ip_results_dict,ip,'SMTPTLS',output)
+
+                # Updates the IP_RESULTS dictionary
+                ip_results_dict[ip_key][BLSPAMHAUS] = {'score': (output.split('%'))[1],
+                                                       'info': (output.split('%'))[0],
+                                                       'info_json': (output.split('%'))[0]}
+
+
+
             else:
                 # Updates the primary dictionary from the IP results dictionary
                 domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, SMTPTLS)
                 domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, VRFY)
                 domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, OPENRELAY)
+                domains_dict = update_from_IP_dict(domains_dict, ip_results_dict, domain, ip_key, BLSPAMHAUS)
 
     return(domains_dict)
 
