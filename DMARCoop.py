@@ -3,15 +3,12 @@
 # 2. DMARC actions (none/reject/quarantine)
 # 3. Admin reports
 
-# TODO: CHANGING TO DICTIONARY FORMAT
-
 
 # Modules
 import TestGen
 
 class DMARC(TestGen.Test):
     name = 'DMARC'
-    #TODO: send spf_object the class and the logging will take the class object
     def __init__(self, domain):
         self.domain = domain
         TestGen.Test.InitialLog(self)
@@ -28,12 +25,10 @@ class DMARC(TestGen.Test):
         # Builds the DMARC domain
         dmarcdomain = '_dmarc.' + domain
 
-        # TODO: DELETE A QUERY
         # Query for the existence of domain
+
         answers = dmarc_object.get_dns_records(domain, 'A', 'DMARC')
-        #if answers is None:
-        #    info_send += "is exposed to spoffing attacks. "
-        #    dmarc_object.Log(domain, 'DMARC', 'is exposed to spoofing attacks')
+
         if answers is -1:
             score_result = "%-1"
             TestGen.testID += 1

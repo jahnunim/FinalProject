@@ -15,7 +15,7 @@ from smtplib import SMTP
 
 class SMTPTLS(TestGen.Test):
     name = 'SMTPTLS'
-    #TODO: send spf_object the class and the logging will take the class object
+
     def __init__(self, ip_string):
         self.ip_string = ip_string
         TestGen.Test.InitialLog(self)

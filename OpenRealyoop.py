@@ -15,7 +15,7 @@ msg = "Open Relay test"
 
 class OpenRelay(TestGen.Test):
     name = 'OpenRelay'
-    #TODO: send spf_object the class and the logging will take the class object
+
     def __init__(self, ip_string):
         self.ip_string = ip_string
         TestGen.Test.InitialLog(self)

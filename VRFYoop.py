@@ -63,7 +63,7 @@ class VRFY(TestGen.Test):
         except(smtplib.SMTPHeloError):
             info = "The server " + ip_string + "refused our HELO message"
             info_send += "The server " + ip_string + "refused our HELO message" + "%-1"
-            SMTPTLS_object.Log(ip_string, 'SMTPTLS', info)
+            vrfy_object.Log(ip_string, 'SMTPTLS', info)
             return (info_send)
 
         # If the server did not respond within the socket timeout window.
